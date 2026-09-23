@@ -1,368 +1,1045 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LA Robots — Melissa McCarter</title>
-  <style>
-    :root {
-      --abyss: #05131a;
-      --deep: #0a232f;
-      --tide: #113545;
-      --surface: #1c4a5e;
-      --foam: #7fe3dc;
-      --cyan: #00f2d2;
-      --aqua: #38bdf8;
-      --sand: #f59e0b;
-      --solar: #fbbf24;
-      --sunlit: #fef3c7;
-      --coral: #ff6b6b;
-      --blush: #fda4af;
-      --chrome: #e2e8f0;
-      --text: #e2e8f0;
-      --panel: rgba(10, 35, 47, 0.82);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      background:
-        radial-gradient(circle at top, rgba(0,242,210,0.09), transparent 30%),
-        linear-gradient(180deg, #05131a 0%, #081d27 100%);
-      color: var(--text);
-      line-height: 1.8;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,242,210,0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(245,158,11,0.04) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-    }
-
-    .page {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 32px 18px 80px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .topbar {
-      margin-bottom: 24px;
-      border: 1px solid rgba(0,242,210,.35);
-      background: rgba(10,35,47,.8);
-      padding: 14px 18px;
-      border-radius: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.72rem;
-      font-family: monospace;
-      color: var(--foam);
-      box-shadow: inset 0 0 16px rgba(0,242,210,0.08), 0 0 18px rgba(0,242,210,0.08);
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.25fr 0.75fr;
-      gap: 22px;
-      align-items: center;
-      border: 1px solid rgba(0,242,210,.35);
-      background: linear-gradient(135deg, rgba(10,35,47,0.9), rgba(17,53,69,0.72));
-      border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 0 26px rgba(0,242,210,0.08), 0 0 20px rgba(245,158,11,0.08);
-      margin-bottom: 28px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: -20% -10% auto auto;
-      width: 260px;
-      height: 260px;
-      background: radial-gradient(circle, rgba(0,242,210,0.18), transparent 65%);
-      pointer-events: none;
-    }
-
-    .hero h1 {
-      margin: 0 0 10px;
-      font-size: clamp(2.4rem, 5vw, 5rem);
-      line-height: 0.96;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: white;
-      font-weight: 700;
-    }
-
-    .hero h1 span {
-      display: block;
-      background: linear-gradient(90deg, var(--cyan), var(--sand), var(--coral));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 0 18px rgba(0,242,210,0.2);
-    }
-
-    .hero .meta {
-      font-size: 0.82rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--sunlit);
-      font-family: monospace;
-    }
-
-    .hero-photo {
-      width: 100%;
-      border-radius: 14px;
-      border: 1px solid rgba(0,242,210,.3);
-      box-shadow: 0 0 18px rgba(0,242,210,0.14), 0 0 18px rgba(245,158,11,0.1);
-      display: block;
-      filter: saturate(1.15) contrast(1.08);
-    }
-
-    .essay {
-      display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-      gap: 28px;
-      align-items: start;
-    }
-
-    article {
-      background: rgba(17,53,69,.42);
-      border: 1px solid rgba(0,242,210,.2);
-      border-radius: 18px;
-      padding: 28px 26px;
-      box-shadow: inset 0 0 18px rgba(0,242,210,0.04);
-    }
-
-    article p {
-      font-size: clamp(1.15rem, 1.7vw, 1.6rem);
-      margin: 0 0 1.5em;
-      color: #edf7ff;
-    }
-
-    article p:first-letter {
-      float: left;
-      font-size: 3.2em;
-      line-height: 0.8;
-      margin: 0.08em 0.12em 0 0;
-      color: var(--cyan);
-      font-weight: 700;
-      text-shadow: 0 0 12px rgba(0,242,210,0.16);
-    }
-
-    article a {
-      color: var(--cyan);
-      text-decoration: none;
-      border-bottom: 1px dashed rgba(0,242,210,0.7);
-    }
-
-    article a:hover {
-      color: white;
-      text-shadow: 0 0 10px rgba(0,242,210,0.6);
-    }
-
-    .photo-figure {
-      margin: 1.3em 0 1.9em;
-      border: 1px solid rgba(0,242,210,.32);
-      background: rgba(0,0,0,.14);
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 0 20px rgba(0,0,0,0.18), 0 0 18px rgba(0,242,210,0.08);
-    }
-
-    .photo-figure::before,
-    .bottom-image::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(0,242,210,0.08), transparent 30%, rgba(245,158,11,0.06));
-      pointer-events: none;
-    }
-
-    .photo-figure img {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-      max-height: 520px;
-      filter: contrast(1.1) saturate(1.2) brightness(0.92);
-    }
-
-    .photo-figure figcaption {
-      position: relative;
-      z-index: 1;
-      padding: 10px 12px 12px;
-      font-size: 0.76rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-family: monospace;
-      color: var(--foam);
-      background: rgba(5,19,26,.68);
-      border-top: 1px solid rgba(0,242,210,.2);
-    }
-
-    .sidebar {
-      display: grid;
-      gap: 18px;
-    }
-
-    .panel {
-      border: 1px solid rgba(0,242,210,.25);
-      background: var(--panel);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: inset 0 0 12px rgba(0,242,210,0.05), 0 0 14px rgba(0,242,210,0.04);
-    }
-
-    .panel h3 {
-      margin: 0 0 12px;
-      font-family: monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--foam);
-      font-size: 0.7rem;
-    }
-
-    .panel p {
-      margin: 0;
-      color: var(--chrome);
-      font-size: 1rem;
-      line-height: 1.7;
-    }
-
-    .bottom-image {
-      position: relative;
-      display: block;
-      margin-top: 28px;
-      width: 100%;
-      border-radius: 18px;
-      border: 1px solid rgba(0,242,210,.3);
-      box-shadow: 0 0 18px rgba(0,242,210,0.09), 0 0 18px rgba(245,158,11,0.08);
-      overflow: hidden;
-      filter: saturate(1.15) contrast(1.08);
-    }
-
-    .bottom-image img {
-      width: 100%;
-      display: block;
-      border-radius: 18px;
-    }
-
-    @media (max-width: 860px) {
-      .hero,
-      .essay {
-        grid-template-columns: 1fr;
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Cinzel:wght@500;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            coastal: {
+              abyss: '#05131a',
+              deep: '#0a232f',
+              tide: '#113545',
+              surface: '#1c4a5e',
+              foam: '#7fe3dc',
+              cyan: '#00f2d2',
+              aqua: '#38bdf8',
+              sand: '#f59e0b',
+              solar: '#fbbf24',
+              sunlit: '#fef3c7',
+              coral: '#ff6b6b',
+              blush: '#fda4af',
+              chrome: '#e2e8f0',
+              wireframe: 'rgba(0, 242, 210, 0.18)'
+            }
+          },
+          fontFamily: {
+            mono: ['"JetBrains Mono"', 'monospace'],
+            tech: ['"Chakra Petch"', 'sans-serif'],
+            serif: ['"Newsreader"', 'serif'],
+            display: ['"Cinzel"', 'serif']
+          },
+          animation: {
+            'pulse-glow': 'pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'scan-drift': 'scanDrift 8s linear infinite',
+            'wave-sway': 'waveSway 6s ease-in-out infinite'
+          },
+          keyframes: {
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.8', filter: 'drop-shadow(0 0 8px rgba(0,242,210,0.5))' },
+              '50%': { opacity: '0.4', filter: 'drop-shadow(0 0 2px rgba(0,242,210,0.2))' }
+            },
+            scanDrift: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(1000%)' }
+            },
+            waveSway: {
+              '0%, 100%': { transform: 'translateX(0%)' },
+              '50%': { transform: 'translateX(-3%)' }
+            }
+          }
+        }
       }
+    };
+  </script>
+  <style>
+    /* CRT Scanline and Cyber Grid backdrop */
+    .cyber-grid {
+      background-image: 
+        linear-gradient(to right, rgba(0, 242, 210, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(245, 158, 11, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .hud-border {
+      position: relative;
+      border: 1px solid rgba(0, 242, 210, 0.3);
+      box-shadow: inset 0 0 15px rgba(0, 242, 210, 0.04), 0 0 20px rgba(10, 35, 47, 0.7);
+    }
+    .hud-border::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: -2px;
+      width: 8px; height: 8px;
+      border-top: 2px solid #00f2d2;
+      border-left: 2px solid #00f2d2;
+    }
+    .hud-border::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; right: -2px;
+      width: 8px; height: 8px;
+      border-bottom: 2px solid #fbbf24;
+      border-right: 2px solid #fbbf24;
+    }
+    .corner-accents::before {
+      content: '';
+      position: absolute;
+      top: -2px; right: -2px;
+      width: 8px; height: 8px;
+      border-top: 2px solid #00f2d2;
+      border-right: 2px solid #00f2d2;
+    }
+    .corner-accents::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: -2px;
+      width: 8px; height: 8px;
+      border-bottom: 2px solid #fbbf24;
+      border-left: 2px solid #fbbf24;
+    }
+    /* Dynamic Cyber-Link Highlight */
+    .cyber-link {
+      position: relative;
+      display: inline-block;
+      color: #00f2d2;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0 4px;
+      border-bottom: 1.5px dashed #f59e0b;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .cyber-link:hover {
+      color: #ffffff;
+      background-color: rgba(0, 242, 210, 0.15);
+      border-bottom-color: #00f2d2;
+      text-shadow: 0 0 8px rgba(0, 242, 210, 0.8);
+    }
+    .cyber-link::after {
+      content: '↗';
+      font-size: 0.65em;
+      margin-left: 3px;
+      opacity: 0.7;
+      vertical-align: super;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Thermal/Optic vision mode filter */
+    body.optic-mode {
+      filter: contrast(1.15) saturate(1.4) hue-rotate(15deg);
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #05131a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1c4a5e;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f2d2;
     }
   </style>
 </head>
-<body>
-  <div class="page">
-    <div class="topbar">SYS.LOC: BUR // Pacific Coast Chronicles</div>
+<body class="bg-coastal-abyss text-slate-200 font-serif min-h-screen relative overflow-x-hidden selection:bg-coastal-cyan selection:text-coastal-abyss">
 
-    <header class="hero">
-      <div>
-        <div class="meta">Field Dossier // Memoir</div>
-        <h1><span>LA Robots</span></h1>
-        <div class="meta">By Melissa McCarter</div>
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <canvas id="ambientCanvas" class="w-full h-full opacity-40"></canvas>
+    <div class="absolute inset-0 cyber-grid opacity-60"></div>
+    <!-- Scanline flicker -->
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-coastal-cyan/5 to-transparent h-24 animate-scan-drift pointer-events-none opacity-30"></div>
+  </div>
+
+  <header class="sticky top-0 z-40 bg-coastal-abyss/85 backdrop-blur-md border-b border-coastal-tide">
+    <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+      <div class="flex items-center space-x-3">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-coastal-deep border border-coastal-cyan/30 text-coastal-cyan">
+          <span class="w-2 h-2 rounded-full bg-coastal-cyan animate-ping"></span>
+          SYS.LOC: BUR//34.2007°N,118.3587°W
+        </span>
+        <span class="hidden sm:inline-block text-coastal-sand font-medium">
+          PACIFIC_OCEAN_OS v4.19 [COASTAL_AUTOMATION]
+        </span>
       </div>
-      <img class="hero-photo" src="Beach.jpg" alt="Beach view at the coast" />
-    </header>
 
-    <main class="essay">
-      <article>
-        <p>
-          The <a href="https://en.wikipedia.org/wiki/Waymo" target="_blank" rel="noreferrer">Waymos</a> are what surprise us first. On screen, they blur into the electric tide of Los Angeles, turning the city into a glassy machine of smooth movement and bright, private certainty.
+      <!-- Live telemetry status toggles & audio -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <button id="soundToggleBtn" class="flex items-center gap-1 px-2.5 py-1 rounded bg-coastal-deep/90 hover:bg-coastal-tide text-coastal-foam border border-coastal-foam/30 transition-colors" title="Toggle Synthesized Coastal/Robotic Ambience">
+          <svg id="soundIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+          </svg>
+          <span id="soundLabel">SOUND: OFF</span>
+        </button>
+
+        <button id="opticToggleBtn" class="flex items-center gap-1 px-2.5 py-1 rounded bg-coastal-deep/90 hover:bg-coastal-tide text-coastal-sand border border-coastal-sand/30 transition-colors" title="Toggle Robotic Sensor HUD overlay">
+          <span class="w-2 h-2 rounded-full bg-coastal-solar"></span>
+          <span id="opticLabel">OPTIC: SCAN</span>
+        </button>
+
+        <button id="dossierDrawerBtn" class="flex items-center gap-1 px-2.5 py-1 rounded bg-coastal-cyan/20 hover:bg-coastal-cyan/30 text-coastal-cyan border border-coastal-cyan/40 transition-colors">
+          <span>INDEX (<span id="linkCountBadge">18</span>)</span>
+        </button>
+      </div>
+    </div>
+    <!-- Reading Progress Indicator bar -->
+    <div class="w-full bg-coastal-abyss h-[2px]">
+      <div id="readProgressBar" class="h-full bg-gradient-to-r from-coastal-cyan via-coastal-sand to-coastal-coral w-0 transition-all duration-150"></div>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-6xl mx-auto px-4 py-8 lg:py-12">
+    
+    <!-- Hero Banner with Beach & Cybernetic Hybrid Aesthetics -->
+    <div class="hud-border corner-accents bg-coastal-deep/70 rounded-xl p-6 md:p-10 mb-10 shadow-2xl backdrop-blur-sm relative overflow-hidden">
+      <!-- Background Beach Sunset / Cyber Glow Grid -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-gradient-to-tr from-coastal-coral/20 via-coastal-sand/15 to-coastal-cyan/20 blur-3xl pointer-events-none"></div>
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
+        <div>
+          <div class="flex items-center gap-2 text-xs font-mono text-coastal-foam mb-3 tracking-widest uppercase">
+            <span class="px-2 py-0.5 bg-coastal-tide border border-coastal-foam/30 rounded">FIELD DOSSIER // MEMOIR</span>
+            <span>PACIFIC COAST CHRONICLES</span>
+          </div>
+          <h1 class="text-4xl md:text-6xl font-tech font-bold tracking-tight text-white mb-2">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-coastal-cyan via-coastal-solar to-coastal-coral">LA ROBOTS</span>
+          </h1>
+          <p class="text-sm md:text-base font-mono text-coastal-sand/90 flex items-center gap-2">
+            <span>BY MELISSA McCARTER</span>
+            <span class="text-coastal-tide">•</span>
+            <span class="text-coastal-foam/80">PACIFIC TIME POCKET ANALYSIS</span>
+          </p>
+        </div>
+
+        <!-- Telemetry Data Capsule -->
+        <div class="bg-coastal-abyss/80 border border-coastal-tide rounded-lg p-3.5 text-xs font-mono max-w-xs space-y-1.5 shadow-inner">
+          <div class="flex justify-between text-slate-400">
+            <span>ATMOSPHERE:</span>
+            <span class="text-coastal-cyan">TANNED & RELAXED</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>AUTONOMY INDEX:</span>
+            <span class="text-coastal-solar">LEVEL 4 HIGH</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>FOOD SENSORY:</span>
+            <span class="text-coastal-coral">CONGEALED CHEESE</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>ESCAPE POD:</span>
+            <span class="text-slate-300">BUR → STL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Grid: Essay Column + Interactive Live Telemetry Dossier -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <article class="lg:col-span-8 bg-coastal-deep/40 rounded-xl p-6 sm:p-10 border border-coastal-tide/80 backdrop-blur-sm relative space-y-8 text-lg sm:text-xl leading-relaxed font-serif text-slate-200 shadow-xl">
+        
+        <!-- Paragraph 1 -->
+        <p class="first-letter:text-5xl first-letter:font-tech first-letter:font-bold first-letter:text-coastal-cyan first-letter:float-left first-letter:mr-3 first-letter:leading-none">
+          The <a href="https://en.wikipedia.org/wiki/Waymo" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="waymo">Waymos</a> are what surprise us first. On screen, they burn but in person, they blend. Maybe that is the motto of <a href="https://en.wikipedia.org/wiki/Culture_of_Los_Angeles" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="la-culture">LA</a>. My daughter says the natives are robots. Tanned, relaxed, standing in line at <a href="https://en.wikipedia.org/wiki/Starbucks" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="starbucks">Starbucks</a> like they have nothing else to do. We are at the airport. Not the planned one. <a href="https://en.wikipedia.org/wiki/Los_Angeles_International_Airport" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="lax">LAX's</a> flights were grounded because of the longest <a href="https://en.wikipedia.org/wiki/2018%E2%80%932019_United_States_federal_government_shutdown" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="shutdown">shutdown in the United States</a>. So we walk through <a href="https://en.wikipedia.org/wiki/Hollywood_Burbank_Airport" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="burbank">Burbank</a>. <a href="https://en.wikipedia.org/wiki/Terracotta" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="terracotta">Terra Cotta floors</a>--<a href="https://en.wikipedia.org/wiki/Spanish_Colonial_Revival_architecture" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="spanish-revival">Spanish 1920s</a>. Flashes of <a href="https://en.wikipedia.org/wiki/Scripps_College" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="scripps">Scripps College</a>, 30 years ago. Maybe some places are pockets of time, holding memories like cards in a <a href="https://en.wikipedia.org/wiki/Poker" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="poker">poker game</a>.
         </p>
 
-        <figure class="photo-figure">
-          <img src="Waymo.PNG" alt="Waymo autonomous vehicle in the city" />
-          <figcaption>Waymo in motion</figcaption>
-        </figure>
-
+        <!-- Paragraph 2 -->
         <p>
-          The <a href="https://en.wikipedia.org/wiki/Uber" target="_blank" rel="noreferrer">Uber</a> driver points out the <a href="https://en.wikipedia.org/wiki/Los_Angeles" target="_blank" rel="noreferrer">Los Angeles</a> atmosphere with a kind of resigned amusement, as though we have wandered into a futuristic film set. A friend in the back seat says the city feels like everybody is an automaton in sunny slow motion.
+          The <a href="https://en.wikipedia.org/wiki/Uber" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="uber">Uber</a> driver points out the <a href="https://en.wikipedia.org/wiki/Delivery_robot" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="doordash-robots">DoorDash robots</a>. Up and down sidewalks. He is called to fix them when people can't figure out how to open them. My friend is incredulous when I told him. "Don't the cracks in the sidewalk from <a href="https://en.wikipedia.org/wiki/List_of_earthquakes_in_California" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="earthquakes">earthquakes</a> make them fall?"
         </p>
 
-        <figure class="photo-figure">
-          <img src="Losangeles.jpg" alt="Los Angeles cityscape" />
-          <figcaption>Los Angeles</figcaption>
-        </figure>
-
+        <!-- Paragraph 3 -->
         <p>
-          My tween daughter is convinced Waymos and <a href="https://www.serverobotics.com/" target="_blank" rel="noreferrer">delivery robots</a> are trying to replace all human life. A friend says the sidewalk rovers are too stupid to be trusted with a single errand, which is exactly why they seem funny and unnerving at once.
+          My tween daughter is convinced <a href="https://waymo.com" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="waymo-tech">Waymos</a> and <a href="https://www.serverobotics.com" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="serve-robots">DoorDash robots</a> will go rogue. <a href="https://en.wikipedia.org/wiki/M3GAN" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="m3gan">Megans</a>, she says. Programmed to benefit humanity. "In <a href="https://en.wikipedia.org/wiki/Missouri" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="missouri">Missouri</a>, they would use those robots for <a href="https://en.wikipedia.org/wiki/Plinking" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="target-practice">target practice</a>."
         </p>
 
+        <!-- Paragraph 4 -->
         <p>
-          We can't figure out how to open the doors of more than one Uber car. They are nicer than other cars we have ever been in. The drivers have thick accents, sunglasses, and the sort of calm that makes every traffic jam feel like it belongs to another planet. We are in the middle of a long trip that started with <a href="https://en.wikipedia.org/wiki/Burbank,_California" target="_blank" rel="noreferrer">Burbank</a>, where the airport feels like a small, sun-bitten museum of old California.
+          We can't figure out how to open the doors of more than one Uber car. They are nicer than other cars we have ever been in. The drivers have thick <a href="https://en.wikipedia.org/wiki/Russian_Americans_in_Los_Angeles" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="russian-la">Russian accents</a>. In the backseat, unsure of the etiquette, I ask <a href="https://en.wikipedia.org/wiki/ChatGPT" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="chatgpt">ChatGPT</a> if we are supposed to talk to them. <em>"That is your choice but many drivers appreciate a quiet ride after a long day,"</em> ChatGPT says my tip is generous. The <a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="ai-ethics">AI</a> and I get into a discussion of how little <a href="https://en.wikipedia.org/wiki/Gig_worker" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="gig-economy">Uber drivers make in LA</a>. Million-dollar houses and <a href="https://en.wikipedia.org/wiki/Cadillac" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="cadillac">Cadillacs</a>. I imagine 1-bedroom <a href="https://en.wikipedia.org/wiki/Hollywood" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="hollywood">Hollywood</a> apartments crammed with <a href="https://en.wikipedia.org/wiki/Immigration_to_the_United_States" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="immigrants">immigrants</a>. They aren't being rounded up because they aren't brown.
         </p>
 
-        <figure class="photo-figure">
-          <img src="Stlouis.jpg" alt="St. Louis skyline or streetscape" />
-          <figcaption>St. Louis, the place we keep returning to</figcaption>
-        </figure>
-
+        <!-- Paragraph 5 -->
         <p>
-          The Uber driver takes us to <a href="https://en.wikipedia.org/wiki/In-N-Out_Burger" target="_blank" rel="noreferrer">In-N-Out</a>. We don't know what to order. We are hungry, tired, and too keyed-up to be reasonable. The fries arrive stiff with cheese, the kind of congealed, glossy heap that makes the city feel both lavish and slightly corrupt.
+          The Uber driver takes us to <a href="https://en.wikipedia.org/wiki/In-N-Out_Burger" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="innout">In and Out</a>. We don't eat beef so we get <a href="https://en.wikipedia.org/wiki/French_fries" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="animal-fries">fries</a>. Blocky, congealed melted cheese. My daughter says, "Missouri's fries are better." When we get back and people ask her what she thought about LA, she dwells on the cheese. I look around cautiously. The bright lights of the restaurant highlight the crowd. They are pockets of natives, one foot between them, but in their own world.
         </p>
 
-        <figure class="photo-figure">
-          <img src="Cheesefries.JPG" alt="Cheese fries from In-N-Out style burger meal" />
-          <figcaption>Cheese fries</figcaption>
-        </figure>
-
+        <!-- Paragraph 6 -->
         <p>
-          My daughter complains that everyone is unfriendly. I explain that in LA people are private. Eyes forward. Eyes glazed. They are not rude; they are merely occupied by their own weather and their own speed. It is a city of glass and motion, where a <a href="https://en.wikipedia.org/wiki/Delivery_robot" target="_blank" rel="noreferrer">DoorDash robot</a> might be side-stepping a crack in the pavement while a human appears to be running a private software update inside their own skull.
+          My daughter complains that everyone is unfriendly. I explain that people in LA are just private. Eyes forward. Eyes glazed. Perhaps <a href="https://en.wikipedia.org/wiki/List_of_California_wildfires" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="wildfires">fires in their memory</a> cloud their gaze. "Why don't the Uber drivers talk to us?" I tell her they won't unless you talk to them first. ChatGPT told me that.
         </p>
 
-        <figure class="photo-figure">
-          <img src="Robotfood.JPG" alt="A sidewalk delivery robot carrying food" />
-          <figcaption>DoorDash robot</figcaption>
-        </figure>
-
+        <!-- Paragraph 7 -->
         <p>
-          We get off the plane and the world is greasy with food scent and warm, bright exhaustion. It feels like people are rushing around a system that has swallowed all of them whole. We agree that no one in LA eats. This is familiar, somehow, because I know <a href="https://en.wikipedia.org/wiki/St._Louis" target="_blank" rel="noreferrer">St. Louis</a> well enough to recognize the difference between weather and temperament. The names of the places are not the point. The point is how the scene tilts our bodies and our language. There is always a camera in the corner, and every human moves as if they are being observed by a machine made of sunlight.
+          We get off the plane. Everyone is rushing, there is food everywhere, and fried grease in the air. We are starving. We agree that no one in LA eats. This is familiar, <a href="https://en.wikipedia.org/wiki/St._Louis" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="st-louis">St. Louis</a> gray and rainy. We have emerged from the airlock of <a href="https://en.wikipedia.org/wiki/California_Dream" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="california-dream">California dreams</a>, like we escaped a <a href="https://en.wikipedia.org/wiki/Isolation_tank" target="_blank" rel="noopener noreferrer" class="cyber-link" data-id="sensory-deprivation">sensory deprivation tank</a> filled with blocky cheese. No Uber driver to take us home--just my husband grinning ready to talk.
         </p>
 
-        <p>
-          “How was LA?” he asks. “Everyone is a robot, the cheese is congealed, and no one eats,” my daughter tells him. I stare ahead at the windows and at the way the day keeps folding itself into another version of itself, as if we have stepped into a near-future memory made of desert air, cheap hospitality, and endless implied motion.
-        </p>
+        <!-- Paragraph 8 (Coda) -->
+        <div class="pt-4 border-t border-coastal-tide/80 font-serif italic text-coastal-sunlit">
+          <p class="text-xl sm:text-2xl leading-relaxed">
+            "How was LA?" he asks. "Everyone is a robot, the cheese is congealed, and no one eats," my daughter tells him. I stare ahead, raindrops on the window, another <span class="text-coastal-cyan not-italic font-tech font-semibold">pocket of time</span> ready to begin.
+          </p>
+        </div>
 
-        <div class="bottom-image">
-          <img src="Beachsunset.jpg" alt="Beach sunset at the end of the story" />
+        <!-- Essay Author Signature Box -->
+        <div class="mt-8 pt-6 border-t border-dashed border-coastal-cyan/30 flex items-center justify-between font-mono text-xs text-coastal-foam">
+          <div>
+            <span class="text-coastal-sand">AUTHOR:</span> Melissa McCarter
+          </div>
+          <div>
+            <span class="text-coastal-cyan">END OF TRANSMISSION</span> // LOGGED
+          </div>
         </div>
       </article>
 
-      <aside class="sidebar">
-        <div class="panel">
-          <h3>Field notes</h3>
-          <p>Los Angeles feels like the city is always mid-update: private, polished, and slightly alert to the possibility of a machine seeing things before a person does.</p>
+      <aside class="lg:col-span-4 sticky top-20 space-y-6">
+        
+        <!-- Live Node Telemetry Dossier Window -->
+        <div id="inspectorPanel" class="hud-border bg-coastal-deep/90 rounded-xl p-5 backdrop-blur-md transition-all duration-300">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-coastal-tide text-xs font-mono">
+            <span class="flex items-center gap-1.5 text-coastal-cyan font-bold">
+              <span class="w-2 h-2 rounded bg-coastal-cyan"></span>
+              NODE TELEMETRY INSPECTOR
+            </span>
+            <span id="inspectorStatus" class="text-coastal-sand text-[10px] uppercase">READY // HOVER LINK</span>
+          </div>
+
+          <div id="inspectorContent">
+            <div class="text-xs font-mono text-slate-400 mb-2">TARGET ENTITY:</div>
+            <h3 id="dossierTitle" class="text-lg font-tech font-bold text-white mb-2">Waymo Autonomous Fleet</h3>
+            
+            <div class="flex flex-wrap gap-1.5 mb-3 text-[11px] font-mono">
+              <span id="dossierTag" class="px-2 py-0.5 rounded bg-coastal-surface text-coastal-cyan">ROBOTICS / SENSORS</span>
+              <span id="dossierClass" class="px-2 py-0.5 rounded bg-coastal-tide text-coastal-sand">SYS_CLASS: LIDAR</span>
+            </div>
+
+            <p id="dossierDesc" class="text-sm font-serif text-slate-300 mb-4 leading-relaxed">
+              Alphabet's self-driving taxi subsidiary operates Jaguar I-PACE electric vehicles across Los Angeles. Known locally for their rooftop spinning LiDAR domes and quiet blending into Southern California commuter traffic.
+            </p>
+
+            <div class="p-3 bg-coastal-abyss/90 rounded border border-coastal-tide font-mono text-xs space-y-1 mb-4">
+              <div class="flex justify-between text-slate-400">
+                <span>RELEVANCE:</span>
+                <span id="dossierRelevance" class="text-coastal-cyan font-semibold">Opening motif / robotic native</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>DESTINATION:</span>
+                <span id="dossierDomain" class="text-coastal-sand truncate max-w-[170px]">en.wikipedia.org</span>
+              </div>
+            </div>
+
+            <a id="dossierActionBtn" href="https://en.wikipedia.org/wiki/Waymo" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded bg-gradient-to-r from-coastal-cyan/20 to-coastal-sand/20 hover:from-coastal-cyan/30 hover:to-coastal-sand/30 border border-coastal-cyan/50 text-coastal-cyan text-xs font-mono font-bold tracking-wider uppercase transition-all">
+              <span>EXPLORE NODE STREAM</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+              </svg>
+            </a>
+          </div>
         </div>
 
-        <div class="panel">
-          <h3>Observation</h3>
-          <p>The initial shock is not fear but recognition—an uncanny familiarity between human rituals and robotic rhythms, all playing out under sun, traffic, and greasy food.</p>
+        <!-- Sensor Radar & Audio Waveform Visualization -->
+        <div class="hud-border bg-coastal-deep/80 rounded-xl p-5 backdrop-blur-md font-mono text-xs">
+          <div class="flex items-center justify-between mb-3 text-coastal-foam">
+            <span class="font-bold flex items-center gap-1.5">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-coastal-coral animate-ping"></span>
+              COASTAL SENSOR SPECTRUM
+            </span>
+            <span class="text-[10px] text-slate-400">ACOUSTIC // MARINE</span>
+          </div>
+          <!-- Canvas Audio Visualizer -->
+          <div class="h-20 bg-coastal-abyss/90 rounded border border-coastal-tide relative overflow-hidden flex items-center justify-center">
+            <canvas id="vizCanvas" class="w-full h-full"></canvas>
+            <div id="audioStatusText" class="absolute text-[11px] text-coastal-foam/60 font-mono pointer-events-none">
+              SYNTHESIZER IDLE [CLICK SOUND: ON]
+            </div>
+          </div>
+          <div class="mt-3 flex justify-between text-[11px] text-slate-400">
+            <span>PACIFIC SALINITY: 34.8 PSU</span>
+            <span class="text-coastal-cyan">ROBOT RADAR: ACTIVE</span>
+          </div>
         </div>
 
-        <div class="panel">
-          <h3>Theme</h3>
-          <p>Everybody appears to be moving through a system they don’t fully control, as though the city itself is a machine with a pulse and a very long memory.</p>
+        <!-- Quick Thematic Matrix / Pocket of Time Index -->
+        <div class="hud-border bg-coastal-deep/80 rounded-xl p-5 backdrop-blur-md">
+          <div class="text-xs font-mono text-coastal-sand font-bold mb-3 flex items-center justify-between">
+            <span>THEMATIC MEMORY NODES</span>
+            <span class="text-[10px] text-coastal-cyan">POCKETS</span>
+          </div>
+          <div class="space-y-2 text-xs font-mono">
+            <button onclick="focusConcept('burbank')" class="w-full text-left p-2 rounded bg-coastal-tide/50 hover:bg-coastal-surface text-slate-300 hover:text-white border border-coastal-tide transition-colors flex justify-between items-center">
+              <span>01. Burbank Airport (BUR)</span>
+              <span class="text-coastal-foam text-[10px]">1920s Spanish</span>
+            </button>
+            <button onclick="focusConcept('scripps')" class="w-full text-left p-2 rounded bg-coastal-tide/50 hover:bg-coastal-surface text-slate-300 hover:text-white border border-coastal-tide transition-colors flex justify-between items-center">
+              <span>02. Scripps College</span>
+              <span class="text-coastal-sand text-[10px]">30 Yrs Ago</span>
+            </button>
+            <button onclick="focusConcept('m3gan')" class="w-full text-left p-2 rounded bg-coastal-tide/50 hover:bg-coastal-surface text-slate-300 hover:text-white border border-coastal-tide transition-colors flex justify-between items-center">
+              <span>03. M3GAN / Rogue Bots</span>
+              <span class="text-coastal-coral text-[10px]">Cinema AI</span>
+            </button>
+            <button onclick="focusConcept('innout')" class="w-full text-left p-2 rounded bg-coastal-tide/50 hover:bg-coastal-surface text-slate-300 hover:text-white border border-coastal-tide transition-colors flex justify-between items-center">
+              <span>04. In-N-Out Congealed</span>
+              <span class="text-coastal-solar text-[10px]">Blocky Cheese</span>
+            </button>
+            <button onclick="focusConcept('chatgpt')" class="w-full text-left p-2 rounded bg-coastal-tide/50 hover:bg-coastal-surface text-slate-300 hover:text-white border border-coastal-tide transition-colors flex justify-between items-center">
+              <span>05. ChatGPT Advice</span>
+              <span class="text-coastal-cyan text-[10px]">Backseat AI</span>
+            </button>
+            <button onclick="focusConcept('sensory-deprivation')" class="w-full text-left p-2 rounded bg-coastal-tide/50 hover:bg-coastal-surface text-slate-300 hover:text-white border border-coastal-tide transition-colors flex justify-between items-center">
+              <span>06. Sensory Deprivation</span>
+              <span class="text-coastal-foam text-[10px]">Airlock Dream</span>
+            </button>
+          </div>
         </div>
+
       </aside>
-    </main>
+    </div>
+  </main>
+
+  <div id="drawerBackdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity">
+    <div id="drawerPanel" class="fixed right-0 top-0 h-full w-full max-w-lg bg-coastal-abyss border-l border-coastal-cyan/40 p-6 shadow-2xl overflow-y-auto transform translate-x-full transition-transform duration-300">
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-coastal-tide">
+        <div>
+          <h2 class="text-xl font-tech font-bold text-coastal-cyan">NETWORK CONCEPT DIRECTORY</h2>
+          <p class="text-xs font-mono text-slate-400">All hyperlinked references embedded in the essay</p>
+        </div>
+        <button id="closeDrawerBtn" class="p-2 rounded bg-coastal-deep hover:bg-coastal-tide text-coastal-foam border border-coastal-foam/30">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="drawerList" class="space-y-3 font-mono text-xs">
+        <!-- Populated via JavaScript dynamically -->
+      </div>
+    </div>
   </div>
+
+  <script>
+    // Knowledge Base of all key terms and entities in the essay
+    const conceptDatabase = {
+      'waymo': {
+        title: 'Waymo Self-Driving Cars',
+        tag: 'AUTONOMOUS MOBILITY',
+        class: 'LEVEL 4 AV // ALPHABET',
+        desc: 'Alphabet Inc.\'s commercial robotaxi operation in Los Angeles. The narrator observes how they blend smoothly into daily traffic, defying sensational media clips where they are set on fire.',
+        relevance: 'Opening revelation & robotic metaphor',
+        url: 'https://en.wikipedia.org/wiki/Waymo',
+        domain: 'en.wikipedia.org'
+      },
+      'la-culture': {
+        title: 'Culture of Los Angeles',
+        tag: 'URBAN SOCIOLOGY',
+        class: 'SOCIO-ECOLOGICAL',
+        desc: 'Characterized by sprawling freeways, film industry veneer, relaxed sun-soaked temperaments, and subtle social atomization ("pockets of natives, one foot between them").',
+        relevance: 'Central thematic backdrop of the memoir',
+        url: 'https://en.wikipedia.org/wiki/Culture_of_Los_Angeles',
+        domain: 'en.wikipedia.org'
+      },
+      'starbucks': {
+        title: 'Starbucks Coffee Culture',
+        tag: 'CONSUMER BEHAVIOR',
+        class: 'RETAIL ROUTINE',
+        desc: 'A ubiquitous fixture of Southern California where tanned patrons wait calmly in line, prompting the daughter\'s remark that the locals resemble automated beings.',
+        relevance: 'Observed archetype of the "relaxed robotic native"',
+        url: 'https://en.wikipedia.org/wiki/Starbucks',
+        domain: 'en.wikipedia.org'
+      },
+      'lax': {
+        title: 'Los Angeles International Airport (LAX)',
+        tag: 'AVIATION INFRASTRUCTURE',
+        class: 'TRANSIT HUB',
+        desc: 'One of the busiest global transit hubs, plagued during the longest US government shutdown by grounded flights and TSA staffing constraints that rerouted travelers.',
+        relevance: 'Disrupted destination forcing entry via Burbank',
+        url: 'https://en.wikipedia.org/wiki/Los_Angeles_International_Airport',
+        domain: 'en.wikipedia.org'
+      },
+      'shutdown': {
+        title: '2018–2019 US Federal Government Shutdown',
+        tag: 'POLITICAL EVENT',
+        class: '35-DAY GRIDLOCK',
+        desc: 'The longest federal government shutdown in US history (lasting 35 days), causing severe staffing shortages among air traffic controllers and TSA agents across major airports.',
+        relevance: 'Historical catalyst for airport diversion',
+        url: 'https://en.wikipedia.org/wiki/2018%E2%80%932019_United_States_federal_government_shutdown',
+        domain: 'en.wikipedia.org'
+      },
+      'burbank': {
+        title: 'Hollywood Burbank Airport (BUR)',
+        tag: 'REGIONAL AIRPORT',
+        class: 'BOB HOPE AIRPORT',
+        desc: 'Famous for its preserved mid-century and 1930s charm, outdoor airstrip boarding, terracotta tiles, and breezy Spanish Colonial atmosphere contrasting with chaotic megalopolises.',
+        relevance: 'The terracotta time-pocket landing zone',
+        url: 'https://en.wikipedia.org/wiki/Hollywood_Burbank_Airport',
+        domain: 'en.wikipedia.org'
+      },
+      'terracotta': {
+        title: 'Terracotta Architectural Tiles',
+        tag: 'MATERIAL CULTURE',
+        class: 'FIRED CLAY',
+        desc: 'Earthy reddish-clay floor tiles traditional in Southern California, Spanish revival estates, and historic Californian educational campuses.',
+        relevance: 'Sensory bridge linking the airport to Scripps memory',
+        url: 'https://en.wikipedia.org/wiki/Terracotta',
+        domain: 'en.wikipedia.org'
+      },
+      'spanish-revival': {
+        title: 'Spanish Colonial Revival Architecture',
+        tag: 'ARCHITECTURAL MOVEMENT',
+        class: '1915–1930s CALIFORNIAN',
+        desc: 'The defining historic style of Southern California, characterized by clay barrel tiles, stucco arches, courtyards, and ornate decorative wrought iron.',
+        relevance: 'Atmospheric texture of old Burbank and Claremont',
+        url: 'https://en.wikipedia.org/wiki/Spanish_Colonial_Revival_architecture',
+        domain: 'en.wikipedia.org'
+      },
+      'scripps': {
+        title: 'Scripps College (Claremont, CA)',
+        tag: 'HIGHER EDUCATION',
+        class: 'LIBERAL ARTS // 1926',
+        desc: 'A prestigious women\'s college founded in 1926 in Claremont, California, celebrated for its Mediterranean-style campus, walled gardens, and historic terracotta promenades.',
+        relevance: 'Personal memory trigger 30 years in the past',
+        url: 'https://en.wikipedia.org/wiki/Scripps_College',
+        domain: 'en.wikipedia.org'
+      },
+      'poker': {
+        title: 'Poker Strategy & Probability',
+        tag: 'GAME THEORY',
+        class: 'CARD MEMORY',
+        desc: 'A metaphor for how specific environments hold memories like concealed cards dealt throughout a lifetime.',
+        relevance: 'Metaphor for episodic human recall',
+        url: 'https://en.wikipedia.org/wiki/Poker',
+        domain: 'en.wikipedia.org'
+      },
+      'uber': {
+        title: 'Uber Technologies & Rideshare Economy',
+        tag: 'GIG MOBILITY',
+        class: 'PLATFORM LABOR',
+        desc: 'The predominant rideshare platform mediating travel between LA neighborhoods, luxury sedans, and quiet immigrant labor dynamics.',
+        relevance: 'Backseat confessional and social divide venue',
+        url: 'https://en.wikipedia.org/wiki/Uber',
+        domain: 'en.wikipedia.org'
+      },
+      'doordash-robots': {
+        title: 'Sidewalk Delivery Robots',
+        tag: 'LAST-MILE AUTOMATION',
+        class: 'AUTONOMOUS ROVERS',
+        desc: 'Wheeled autonomous sidewalk rovers (like Serve Robotics and Coco) deployed across West Hollywood and Downtown LA to courier food orders.',
+        relevance: 'Physical manifestations of urban automation',
+        url: 'https://en.wikipedia.org/wiki/Delivery_robot',
+        domain: 'en.wikipedia.org'
+      },
+      'earthquakes': {
+        title: 'California Seismic Activity',
+        tag: 'GEOLOGY & HAZARDS',
+        class: 'SAN ANDREAS FAULT',
+        desc: 'California\'s frequent seismic tremors that fracture municipal pavement and create sidewalk hazards for pedestrian rovers.',
+        relevance: 'Friend\'s skeptical obstacle for ground robots',
+        url: 'https://en.wikipedia.org/wiki/List_of_earthquakes_in_California',
+        domain: 'en.wikipedia.org'
+      },
+      'waymo-tech': {
+        title: 'Waymo Sensor Suite & LiDAR',
+        tag: 'MACHINE PERCEPTION',
+        class: 'HARDWARE SUITE',
+        desc: 'The multi-camera, radar, and LiDAR sensor package allowing driverless vehicles to navigate congested intersections with superhuman caution.',
+        relevance: 'Technological uncanny valley experienced by travelers',
+        url: 'https://waymo.com',
+        domain: 'waymo.com'
+      },
+      'serve-robots': {
+        title: 'Serve Robotics Sidewalk Delivery',
+        tag: 'AUTONOMOUS SYSTEMS',
+        class: 'URBAN LOGISTICS',
+        desc: 'Originally spun out from Postmates/Uber, Serve builds friendly sidewalk delivery robots equipped with headlights and compartment pinch latches.',
+        relevance: 'The robots the Uber driver rescues from confusion',
+        url: 'https://www.serverobotics.com',
+        domain: 'serverobotics.com'
+      },
+      'm3gan': {
+        title: 'M3GAN (2022 Film)',
+        tag: 'SCI-FI POP CULTURE',
+        class: 'AI HORROR THRILLER',
+        desc: 'The iconic sci-fi horror film about an AI doll programmed to protect and assist children that develops catastrophic autonomous cruelty.',
+        relevance: 'The tween daughter\'s benchmark for rogue robotics',
+        url: 'https://en.wikipedia.org/wiki/M3GAN',
+        domain: 'en.wikipedia.org'
+      },
+      'missouri': {
+        title: 'Missouri & Midwestern Rural Culture',
+        tag: 'REGIONAL CONTRAST',
+        class: 'MIDWEST USA',
+        desc: 'The family\'s home state, characterized by rolling Ozark topography, hunting traditions, rainy St. Louis weather, and culinary pride.',
+        relevance: 'Cultural baseline used to evaluate California strangeness',
+        url: 'https://en.wikipedia.org/wiki/Missouri',
+        domain: 'en.wikipedia.org'
+      },
+      'target-practice': {
+        title: 'Target Practice & Plinking',
+        tag: 'FIREARMS SUBCULTURE',
+        class: 'RECREATION',
+        desc: 'Informal recreational shooting at tin cans and makeshift targets, juxtaposed humorously against delicate California autonomous technology.',
+        relevance: 'Daughter\'s witty quip on rural vs tech culture',
+        url: 'https://en.wikipedia.org/wiki/Plinking',
+        domain: 'en.wikipedia.org'
+      },
+      'russian-la': {
+        title: 'Russian Community in Los Angeles',
+        tag: 'IMMIGRATION DEMOGRAPHICS',
+        class: 'WEST HOLLYWOOD DIASPORA',
+        desc: 'Los Angeles houses significant Russian-speaking communities, notably centered around West Hollywood and the San Fernando Valley, heavily present in private transit.',
+        relevance: 'Cultural identity of the silent luxury drivers',
+        url: 'https://en.wikipedia.org/wiki/Russian_Americans_in_Los_Angeles',
+        domain: 'en.wikipedia.org'
+      },
+      'chatgpt': {
+        title: 'ChatGPT & Conversational AI',
+        tag: 'LARGE LANGUAGE MODELS',
+        class: 'OPENAI // GENERATIVE',
+        desc: 'The conversational assistant consulted in real time to navigate social rideshare etiquette, tip validations, and sociological inquiries.',
+        relevance: 'Digital arbiter of human social norms',
+        url: 'https://en.wikipedia.org/wiki/ChatGPT',
+        domain: 'en.wikipedia.org'
+      },
+      'ai-ethics': {
+        title: 'Artificial Intelligence & Labor Economics',
+        tag: 'ETHICS & DISRUPTION',
+        class: 'ALGORITHMIC EQUITY',
+        desc: 'Discussions on how algorithmic labor platforms manage remuneration, wage margins, and the precarious balance between luxury and subsistence.',
+        relevance: 'Backseat existential dialogue between human and machine',
+        url: 'https://en.wikipedia.org/wiki/Artificial_intelligence',
+        domain: 'en.wikipedia.org'
+      },
+      'gig-economy': {
+        title: 'The Gig Economy in Los Angeles',
+        tag: 'LABOR DYNAMICS',
+        class: 'INDEPENDENT CONTRACTING',
+        desc: 'The harsh economic reality of independent gig drivers navigating high fuel costs, expensive vehicle leases, and extreme local housing costs.',
+        relevance: 'Contrast between multimillion mansions and driver hardship',
+        url: 'https://en.wikipedia.org/wiki/Gig_worker',
+        domain: 'en.wikipedia.org'
+      },
+      'cadillac': {
+        title: 'Cadillac Luxury Motorcars',
+        tag: 'AUTOMOTIVE LUXURY',
+        class: 'PRESTIGE STATUS',
+        desc: 'A symbol of American executive luxury cruising through Hollywood palm-lined boulevards, contrasting with back-street tenements.',
+        relevance: 'Visual signifier of LA wealth inequality',
+        url: 'https://en.wikipedia.org/wiki/Cadillac',
+        domain: 'en.wikipedia.org'
+      },
+      'hollywood': {
+        title: 'Hollywood Neighborhood & Industry',
+        tag: 'GEOGRAPHY & ENTERTAINMENT',
+        class: 'LOS ANGELES DISTRICT',
+        desc: 'Globally celebrated district known for cinema history alongside cramped apartment courtyards sheltering working-class immigrant communities.',
+        relevance: 'Setting of the author\'s socioeconomic reflections',
+        url: 'https://en.wikipedia.org/wiki/Hollywood',
+        domain: 'en.wikipedia.org'
+      },
+      'immigrants': {
+        title: 'Immigration to the United States & Racial Bias',
+        tag: 'SOCIO-POLITICAL',
+        class: 'BORDER POLICY',
+        desc: 'The author reflects on selective immigration enforcement and the racial politics of which laborers face scrutiny in American cities.',
+        relevance: 'Critical social critique embedded in the narrative',
+        url: 'https://en.wikipedia.org/wiki/Immigration_to_the_United_States',
+        domain: 'en.wikipedia.org'
+      },
+      'innout': {
+        title: 'In-N-Out Burger',
+        tag: 'CALIFORNIAN ICON',
+        class: 'FAST FOOD FRANCHISE',
+        desc: 'The iconic Southern California chain revered for fresh ingredients and secret menus, serving as a pilgrimage stop that baffles the Missouri beef-free visitors.',
+        relevance: 'The culinary crucible of the journey',
+        url: 'https://en.wikipedia.org/wiki/In-N-Out_Burger',
+        domain: 'en.wikipedia.org'
+      },
+      'animal-fries': {
+        title: 'French Fries & Animal Style Toppings',
+        tag: 'CULINARY PHENOMENON',
+        class: 'MELTED AMERICAN CHEESE',
+        desc: 'Freshly peeled Kennebec potato fries smothered in grilled onions and processed American cheese that rapidly solidifies into a thick, blocky layer.',
+        relevance: 'The daughter\'s enduring memory of LA cuisine',
+        url: 'https://en.wikipedia.org/wiki/French_fries',
+        domain: 'en.wikipedia.org'
+      },
+      'wildfires': {
+        title: 'California Wildfires & Collective Trauma',
+        tag: 'ECOLOGICAL CRISIS',
+        class: 'CLIMATE EVENTS',
+        desc: 'Recurring seasonal wildfires in Southern California that fill skies with ash, leave scars in memory, and engender an air of stoic reserve among residents.',
+        relevance: 'Poetic explanation for the glazed gaze of locals',
+        url: 'https://en.wikipedia.org/wiki/List_of_California_wildfires',
+        domain: 'en.wikipedia.org'
+      },
+      'st-louis': {
+        title: 'St. Louis, Missouri',
+        tag: 'MIDWEST METROPOLIS',
+        class: 'GATEWAY CITY',
+        desc: 'The author\'s return point: rainy, humid, grease-laden, grounded, and bursting with direct human chatter and family reunions.',
+        relevance: 'The reality waiting outside the California dream',
+        url: 'https://en.wikipedia.org/wiki/St._Louis',
+        domain: 'en.wikipedia.org'
+      },
+      'california-dream': {
+        title: 'The California Dream',
+        tag: 'CULTURAL MYTHOLOGY',
+        class: 'UTOPIAN PROMISE',
+        desc: 'The historic promise of reinvention, sunlit beaches, effortless glamour, and futuristic high-tech paradise.',
+        relevance: 'The ideological bubble the travelers escape from',
+        url: 'https://en.wikipedia.org/wiki/California_Dream',
+        domain: 'en.wikipedia.org'
+      },
+      'sensory-deprivation': {
+        title: 'Sensory Deprivation & Floatation Tanks',
+        tag: 'PSYCHOLOGY & PHYSIOLOGY',
+        class: 'ISOLATION PODS',
+        desc: 'Soundproof, lightless tanks filled with buoyant saltwater designed to suspend outer sensation—a metaphor for LA\'s surreal, insulated detachment.',
+        relevance: 'Climactic metaphor for escaping the city\'s isolation',
+        url: 'https://en.wikipedia.org/wiki/Isolation_tank',
+        domain: 'en.wikipedia.org'
+      }
+    };
+  </script>
+
+  <script>
+    // Audio Web API Coastal-Robotic Synthesizer
+    let audioCtx = null;
+    let isSoundOn = false;
+    let oceanGain = null;
+    let synthOsc = null;
+    let synthGain = null;
+    let noiseNode = null;
+
+    function initAudio() {
+      if (audioCtx) return;
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+
+        // White/Pink noise generator for gentle coastal waves
+        const bufferSize = audioCtx.sampleRate * 2;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.99 * b0 + white * 0.05;
+          b1 = 0.95 * b1 + white * 0.07;
+          b2 = 0.85 * b2 + white * 0.12;
+          output[i] = (b0 + b1 + b2) * 0.18;
+        }
+
+        noiseNode = audioCtx.createBufferSource();
+        noiseNode.buffer = noiseBuffer;
+        noiseNode.loop = true;
+
+        // Coastal filter
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(320, audioCtx.currentTime);
+
+        oceanGain = audioCtx.createGain();
+        oceanGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+
+        noiseNode.connect(filter);
+        filter.connect(oceanGain);
+        oceanGain.connect(audioCtx.destination);
+        noiseNode.start(0);
+
+        // Robotic harmonic carrier tone
+        synthOsc = audioCtx.createOscillator();
+        synthOsc.type = 'sine';
+        synthOsc.frequency.setValueAtTime(110, audioCtx.currentTime); // Low A
+
+        synthGain = audioCtx.createGain();
+        synthGain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+
+        synthOsc.connect(synthGain);
+        synthGain.connect(audioCtx.destination);
+        synthOsc.start();
+      } catch (err) {
+        console.warn('Web Audio initialization error:', err);
+      }
+    }
+
+    function toggleSound() {
+      initAudio();
+      if (!audioCtx) return;
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+
+      isSoundOn = !isSoundOn;
+      const soundLabel = document.getElementById('soundLabel');
+      const soundBtn = document.getElementById('soundToggleBtn');
+      const statusText = document.getElementById('audioStatusText');
+
+      if (isSoundOn) {
+        oceanGain.gain.exponentialRampToValueAtTime(0.2, audioCtx.currentTime + 1.2);
+        synthGain.gain.exponentialRampToValueAtTime(0.02, audioCtx.currentTime + 1.5);
+        soundLabel.textContent = 'SOUND: ON';
+        soundBtn.classList.add('bg-coastal-cyan/20', 'border-coastal-cyan');
+        statusText.textContent = 'PACIFIC HARMONIC SYNTH // RUNNING';
+        statusText.classList.add('text-coastal-cyan');
+      } else {
+        oceanGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.6);
+        synthGain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.6);
+        soundLabel.textContent = 'SOUND: OFF';
+        soundBtn.classList.remove('bg-coastal-cyan/20', 'border-coastal-cyan');
+        statusText.textContent = 'SYNTHESIZER IDLE [CLICK SOUND: ON]';
+        statusText.classList.remove('text-coastal-cyan');
+      }
+    }
+
+    // Play subtle digital chirp on link inspection
+    function playChirp(freq = 660) {
+      if (!isSoundOn || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, audioCtx.currentTime + 0.08);
+
+        g.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
+
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.09);
+      } catch (e) {}
+    }
+
+    // Update Dossier Panel with selected concept details
+    function inspectConcept(id) {
+      const data = conceptDatabase[id];
+      if (!data) return;
+
+      playChirp(880);
+      document.getElementById('inspectorStatus').textContent = `ACTIVE // [${id.toUpperCase()}]`;
+      document.getElementById('dossierTitle').textContent = data.title;
+      document.getElementById('dossierTag').textContent = data.tag;
+      document.getElementById('dossierClass').textContent = data.class;
+      document.getElementById('dossierDesc').textContent = data.desc;
+      document.getElementById('dossierRelevance').textContent = data.relevance;
+      document.getElementById('dossierDomain').textContent = data.domain;
+      
+      const actionBtn = document.getElementById('dossierActionBtn');
+      actionBtn.href = data.url;
+      actionBtn.setAttribute('data-current-url', data.url);
+
+      const panel = document.getElementById('inspectorPanel');
+      panel.classList.add('ring-2', 'ring-coastal-cyan/40');
+      setTimeout(() => panel.classList.remove('ring-2', 'ring-coastal-cyan/40'), 350);
+    }
+
+    // Scroll to and focus a concept directly
+    function focusConcept(id) {
+      const target = document.querySelector(`.cyber-link[data-id="${id}"]`);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.classList.add('bg-coastal-cyan/30');
+        setTimeout(() => target.classList.remove('bg-coastal-cyan/30'), 1200);
+        inspectConcept(id);
+      }
+    }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Bind sound button
+      document.getElementById('soundToggleBtn').addEventListener('click', toggleSound);
+
+      // Bind Optic / Vision Mode button
+      const opticBtn = document.getElementById('opticToggleBtn');
+      opticBtn.addEventListener('click', () => {
+        document.body.classList.toggle('optic-mode');
+        const isOptic = document.body.classList.contains('optic-mode');
+        document.getElementById('opticLabel').textContent = isOptic ? 'OPTIC: THERMAL' : 'OPTIC: SCAN';
+        opticBtn.classList.toggle('border-coastal-coral', isOptic);
+      });
+
+      // Bind all cyber-links to telemetry inspector
+      const links = document.querySelectorAll('.cyber-link');
+      links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          const id = link.getAttribute('data-id');
+          inspectConcept(id);
+        });
+        link.addEventListener('click', (e) => {
+          // Allow opening the link or inspecting
+          const id = link.getAttribute('data-id');
+          inspectConcept(id);
+        });
+      });
+
+      // Drawer functionality
+      const drawerBtn = document.getElementById('dossierDrawerBtn');
+      const drawerBackdrop = document.getElementById('drawerBackdrop');
+      const drawerPanel = document.getElementById('drawerPanel');
+      const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+      const drawerList = document.getElementById('drawerList');
+
+      // Populate Concept Drawer
+      const conceptKeys = Object.keys(conceptDatabase);
+      document.getElementById('linkCountBadge').textContent = conceptKeys.length;
+
+      conceptKeys.forEach((key, index) => {
+        const item = conceptDatabase[key];
+        const card = document.createElement('div');
+        card.className = 'p-3 rounded bg-coastal-deep/90 border border-coastal-tide hover:border-coastal-cyan/40 transition-colors flex flex-col gap-1.5';
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-coastal-cyan font-bold">${String(index + 1).padStart(2, '0')}. ${item.title}</span>
+            <span class="text-[10px] text-coastal-sand bg-coastal-surface px-1.5 py-0.5 rounded">${item.tag}</span>
+          </div>
+          <p class="text-slate-300 font-serif text-xs">${item.desc}</p>
+          <div class="flex items-center justify-between pt-1 text-[10px]">
+            <button class="text-coastal-foam hover:underline" onclick="focusConcept('${key}'); closeDrawer();">Jump to text →</button>
+            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="text-coastal-solar hover:underline font-mono">Source (${item.domain}) ↗</a>
+          </div>
+        `;
+        drawerList.appendChild(card);
+      });
+
+      function openDrawer() {
+        drawerBackdrop.classList.remove('hidden');
+        setTimeout(() => {
+          drawerPanel.classList.remove('translate-x-full');
+        }, 10);
+      }
+
+      function closeDrawer() {
+        drawerPanel.classList.add('translate-x-full');
+        setTimeout(() => {
+          drawerBackdrop.classList.add('hidden');
+        }, 300);
+      }
+      window.closeDrawer = closeDrawer;
+
+      drawerBtn.addEventListener('click', openDrawer);
+      closeDrawerBtn.addEventListener('click', closeDrawer);
+      drawerBackdrop.addEventListener('click', (e) => {
+        if (e.target === drawerBackdrop) closeDrawer();
+      });
+
+      // Reading progress bar
+      window.addEventListener('scroll', () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+        document.getElementById('readProgressBar').style.width = `${Math.min(100, Math.max(0, progress))}%`;
+      });
+
+      // Background Ambient Particle Wave Canvas
+      const bgCanvas = document.getElementById('ambientCanvas');
+      const bgCtx = bgCanvas.getContext('2d');
+      let particles = [];
+
+      function resizeCanvas() {
+        bgCanvas.width = window.innerWidth;
+        bgCanvas.height = window.innerHeight;
+        particles = [];
+        const count = Math.floor(window.innerWidth / 24);
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * bgCanvas.width,
+            y: Math.random() * bgCanvas.height,
+            speedY: -0.2 - Math.random() * 0.4,
+            speedX: (Math.random() - 0.5) * 0.3,
+            size: 1 + Math.random() * 2,
+            color: Math.random() > 0.6 ? '#00f2d2' : (Math.random() > 0.3 ? '#f59e0b' : '#38bdf8')
+          });
+        }
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      function animateParticles() {
+        bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+        for (let p of particles) {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          if (p.y < 0) p.y = bgCanvas.height;
+          if (p.x < 0) p.x = bgCanvas.width;
+          if (p.x > bgCanvas.width) p.x = 0;
+
+          bgCtx.fillStyle = p.color;
+          bgCtx.shadowBlur = 4;
+          bgCtx.shadowColor = p.color;
+          bgCtx.beginPath();
+          bgCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          bgCtx.fill();
+        }
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+      // HUD Radar/Audio Spectrum Visualizer Canvas
+      const vizCanvas = document.getElementById('vizCanvas');
+      const vCtx = vizCanvas.getContext('2d');
+      let phase = 0;
+
+      function resizeViz() {
+        vizCanvas.width = vizCanvas.parentElement.clientWidth;
+        vizCanvas.height = vizCanvas.parentElement.clientHeight;
+      }
+      resizeViz();
+      window.addEventListener('resize', resizeViz);
+
+      function drawViz() {
+        vCtx.clearRect(0, 0, vizCanvas.width, vizCanvas.height);
+        const w = vizCanvas.width;
+        const h = vizCanvas.height;
+
+        // Draw horizontal mid radar line
+        vCtx.strokeStyle = 'rgba(0, 242, 210, 0.15)';
+        vCtx.lineWidth = 1;
+        vCtx.beginPath();
+        vCtx.moveTo(0, h / 2);
+        vCtx.lineTo(w, h / 2);
+        vCtx.stroke();
+
+        // Wave lines simulating coastal swell + digital sine oscillations
+        vCtx.beginPath();
+        vCtx.strokeStyle = isSoundOn ? '#00f2d2' : 'rgba(127, 227, 220, 0.3)';
+        vCtx.lineWidth = 1.5;
+
+        for (let x = 0; x < w; x++) {
+          const amplitude = isSoundOn ? 18 : 6;
+          const y = h / 2 + Math.sin(x * 0.04 + phase) * amplitude * Math.cos(x * 0.01);
+          if (x === 0) vCtx.moveTo(x, y);
+          else vCtx.lineTo(x, y);
+        }
+        vCtx.stroke();
+
+        // Second subtle amber harmonic wave
+        vCtx.beginPath();
+        vCtx.strokeStyle = isSoundOn ? 'rgba(245, 158, 11, 0.7)' : 'rgba(245, 158, 11, 0.2)';
+        vCtx.lineWidth = 1;
+
+        for (let x = 0; x < w; x += 2) {
+          const amplitude = isSoundOn ? 12 : 3;
+          const y = h / 2 + Math.cos(x * 0.06 - phase * 1.5) * amplitude;
+          if (x === 0) vCtx.moveTo(x, y);
+          else vCtx.lineTo(x, y);
+        }
+        vCtx.stroke();
+
+        phase += isSoundOn ? 0.08 : 0.02;
+        requestAnimationFrame(drawViz);
+      }
+      drawViz();
+    });
+  </script>
 </body>
 </html>
