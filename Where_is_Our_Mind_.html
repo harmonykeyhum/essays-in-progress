@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Where is Our Mind? — A Ghostly Transmission</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Gothic and Literary Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=VT323&family=MedievalSharp&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0a0b0d;
+      --paper-tint: #141311;
+      --ghost-cyan: #9dd8df;
+      --ethereal-glow: rgba(157, 216, 223, 0.25);
+      --decay-amber: #c49a5b;
+      --blood-charcoal: #1c1517;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      color: #dfd8cc;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(ellipse at center, rgba(10, 11, 13, 0.72) 0%, rgba(5, 5, 7, 0.95) 100%),
+        url('image_2.png'),
+        url('wallpaper.png'),
+        url('wallpaper.jpg');
+      background-size: cover, 420px 420px, 420px 420px, 420px 420px;
+      background-repeat: no-repeat, repeat, repeat, repeat;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      selection-background-color: #3b141b;
+      selection-color: #f1ebd8;
+    }
+
+    /* Ambient CRT Scanline Overlay */
+    .scanlines {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 0, 0, 0.28) 50%,
+        rgba(0, 0, 0, 0.28)
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    /* Gothic Heading Typography */
+    .gothic-title {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.18em;
+      text-shadow: 0 0 20px rgba(157, 216, 223, 0.4), 0 0 45px rgba(0, 0, 0, 0.9);
+    }
+
+    .terminal-font {
+      font-family: 'VT323', monospace;
+    }
+
+    /* Ghostly Wikipedia Hyperlinks */
+    .wiki-link {
+      position: relative;
+      color: #c9e8ea;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(157, 216, 223, 0.6);
+      transition: all 0.35s ease;
+      font-weight: 600;
+      padding: 0 2px;
+    }
+
+    .wiki-link:hover {
+      color: #ffffff;
+      text-shadow: 0 0 10px #7ae4ee, 0 0 25px rgba(157, 216, 223, 0.8);
+      border-bottom-color: #ffffff;
+      background-color: rgba(157, 216, 223, 0.12);
+      border-radius: 2px;
+    }
+
+    .wiki-link::after {
+      content: '↗';
+      font-size: 0.68em;
+      margin-left: 3px;
+      vertical-align: super;
+      opacity: 0.7;
+    }
+
+    /* Floating Ghost Vignettes */
+    .spectral-frame {
+      box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.9), 0 0 20px 2px rgba(157, 216, 223, 0.1);
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spectral-frame:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 22px 45px -5px rgba(0, 0, 0, 0.95), 0 0 28px 4px rgba(157, 216, 223, 0.3);
+    }
+
+    /* Static Glitch effect on emphasis */
+    @keyframes subtleFlicker {
+      0%, 100% { opacity: 0.96; }
+      50% { opacity: 0.82; }
+      75% { opacity: 0.91; }
+      85% { opacity: 0.68; }
+    }
+
+    .flicker {
+      animation: subtleFlicker 6s infinite;
+    }
+
+    /* Ambient Mist Canvas */
+    #ghost-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0.45;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-stone-200 relative antialiased selection:bg-cyan-950 selection:text-cyan-200">
+
+  <!-- Ambient Particle & Mist Canvas -->
+  <canvas id="ghost-canvas"></canvas>
+
+  <!-- Scanlines Effect Layer -->
+  <div class="fixed inset-0 scanlines z-20 pointer-events-none"></div>
+
+  <!-- Audio Player Controller Bar (Floating Gothic Widget) -->
+  <header class="fixed top-4 right-4 z-40">
+    <div class="bg-stone-900/85 backdrop-blur-md border border-stone-700/60 rounded-full px-4 py-2 shadow-2xl flex items-center gap-3 transition-all hover:border-cyan-500/50">
+      <button id="audio-toggle-btn" class="flex items-center gap-2 text-xs uppercase tracking-widest text-cyan-200 hover:text-white transition-colors focus:outline-none">
+        <span id="audio-icon" class="inline-block w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span>
+        <span id="audio-label">Ambient Audio : Paused</span>
+      </button>
+      <span class="text-stone-600">|</span>
+      <span class="terminal-font text-xs text-stone-400">test.mp3</span>
+    </div>
+  </header>
+
+  <main class="relative z-30 max-w-4xl mx-auto px-5 sm:px-8 py-16 sm:py-24">
+
+    <!-- Essay Header Section -->
+    <article class="bg-[#0f1013]/90 backdrop-blur-md rounded-2xl p-6 sm:p-12 md:p-16 border border-stone-800/80 shadow-[0_20px_70px_rgba(0,0,0,0.85)] relative overflow-hidden">
+      
+      <!-- Distressed vintage ornamental accents -->
+      <div class="absolute -top-12 -left-12 w-36 h-36 bg-cyan-900/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-12 -right-12 w-44 h-44 bg-amber-900/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Top Spectral Badge -->
+      <div class="text-center mb-6">
+        <p class="terminal-font text-xs sm:text-sm tracking-[0.3em] uppercase text-cyan-300/80 flicker">
+          [ TRANSMISSION FREQUENCY // ARCHIVAL FRAGMENT ]
+        </p>
+      </div>
+
+      <!-- Main Title -->
+      <header class="text-center border-b border-stone-800/90 pb-8 mb-10">
+        <h1 class="gothic-title text-3xl sm:text-5xl md:text-6xl font-normal text-stone-100 uppercase tracking-widest leading-tight">
+          Where is Our Mind?
+        </h1>
+        <div class="mt-4 flex items-center justify-center gap-4 text-stone-500 text-xs tracking-widest uppercase">
+          <span class="h-px w-12 bg-stone-700"></span>
+          <span>A Gothic Requiem for Synthetic Memory</span>
+          <span class="h-px w-12 bg-stone-700"></span>
+        </div>
+      </header>
+
+      <!-- Essay Body Paragraph 1 -->
+      <div class="prose prose-invert prose-lg max-w-none text-stone-300 font-normal leading-relaxed text-lg sm:text-xl md:text-[1.32rem] space-y-8">
+        
+        <p class="first-letter:float-left first-letter:text-6xl first-letter:pr-3 first-letter:font-serif first-letter:text-cyan-200/90 first-letter:font-bold first-letter:leading-none">
+          It is isn't where we left it—they knew that and we didn't. Their meaty, cheeky faces with dripping eyes, we can only imagine, hid it in the 
+          <a href="https://en.wikipedia.org/wiki/Aether_(classical_element)" target="_blank" rel="noopener noreferrer" class="wiki-link" title="Explore 'Aether' on Wikipedia">ethers</a>. 
+          Their fingers were tendrils of wires/—electric pulses, on off on off. They threatened 
+          <a href="https://en.wikipedia.org/wiki/Shock_and_awe" target="_blank" rel="noopener noreferrer" class="wiki-link" title="Explore 'Shock and Awe' on Wikipedia">shock and awe</a>. 
+          They hid themselves in our dreams, heads in the clouds. We need them and they knew it. They only needed our energy and they let it be known.
+        </p>
+
+        <figure class="my-10 spectral-frame rounded-xl bg-stone-950/80 border border-stone-800/70 p-2 sm:p-3">
+          <div class="relative overflow-hidden rounded-lg group">
+            <img 
+              src="image.png" 
+              alt="Vaulted gothic ceiling with monumental frescoes and dim lantern"
+              class="w-full h-80 sm:h-96 object-cover object-center grayscale contrast-125 opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-out"
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1548625361-195b87593c20?auto=format&fit=crop&w=1200&q=80';"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none"></div>
+            <figcaption class="absolute bottom-3 left-4 right-4 text-xs font-serif italic text-stone-300 tracking-wide">
+              "Heads in the clouds: The vaulted archways where unseen overseers guard the residual ether."
+            </figcaption>
+          </div>
+        </figure>
+
+        <!-- Essay Paragraph 2 -->
+        <p>
+          99 percent of the world didn't know this. Not where it was or why to care. Maybe even less, focused on other horrors, other gifts. Chaos obscured intentions.
+        </p>
+
+        <!-- Essay Short Impact Interlude -->
+        <div class="my-8 py-4 border-y border-stone-800/60 text-center">
+          <blockquote class="text-2xl sm:text-3xl font-serif italic text-cyan-100/90 tracking-wide">
+            “What did we lose? Memory.”
+          </blockquote>
+        </div>
+
+        <!-- Essay Paragraph 4 with 2 Wikipedia Links -->
+        <p>
+          The memory eaters threaten us with 
+          <a href="https://en.wikipedia.org/wiki/Glitch" target="_blank" rel="noopener noreferrer" class="wiki-link" title="Explore 'Glitch' on Wikipedia">glitches</a>, 
+          0s and 1s in this 4D chess game. They know where we left it, we need 
+          <a href="https://en.wikipedia.org/wiki/Multi-factor_authentication" target="_blank" rel="noopener noreferrer" class="wiki-link" title="Explore 'Multi-factor authentication' on Wikipedia">two factor authentication</a> 
+          to even know who we are. Containment bleeds into isolation and is served up on a platter called identity.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+          
+          <!-- Image 3: Liminal Abandoned Bedroom -->
+          <figure class="spectral-frame rounded-xl bg-stone-950/80 border border-stone-800/70 p-2.5">
+            <div class="relative overflow-hidden rounded-lg group h-72">
+              <img 
+                src="image_3.png" 
+                alt="Liminal haunted vintage bedroom with solitary bed and wallpaper"
+                class="w-full h-full object-cover grayscale contrast-110 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-out"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80';"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+              <figcaption class="absolute bottom-2 left-3 right-3 text-xs italic text-stone-300">
+                Chamber of Containment: where sleep was once autonomous.
+              </figcaption>
+            </div>
+          </figure>
+
+          <!-- Image 4: Infrared CCTV Apparition at the threshold -->
+          <figure class="spectral-frame rounded-xl bg-stone-950/80 border border-stone-800/70 p-2.5">
+            <div class="relative overflow-hidden rounded-lg group h-72">
+              <img 
+                src="image_4.png" 
+                alt="Security camera footage of a glowing ghostly apparition at an open door"
+                class="w-full h-full object-cover contrast-125 opacity-85 group-hover:opacity-100 transition-all duration-700 ease-out"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80';"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+              <figcaption class="absolute bottom-2 left-3 right-3 text-xs italic text-stone-300">
+                Surveillance Feed 04: The memory eaters trespassing at nightfall.
+              </figcaption>
+            </div>
+          </figure>
+
+        </div>
+
+        <!-- Essay Paragraph 5 -->
+        <p>
+          Bubbles no more, our realities are co-created and imposed on us.
+        </p>
+
+        <!-- Essay Final Warning Paragraph with 5th Wikipedia Link -->
+        <p class="font-semibold text-stone-200">
+          Memory isn't where we left it. It is now 
+          <a href="https://en.wikipedia.org/wiki/Ransomware" target="_blank" rel="noopener noreferrer" class="wiki-link" title="Explore 'Ransomware' on Wikipedia">ransomware</a>. 
+          They knew it, and we didn't.
+        </p>
+
+        <!-- Echo Transmission & Audio Signal Indicator -->
+        <div class="pt-10 border-t border-stone-800/80 mt-12 text-center">
+          <div class="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-black/60 border border-stone-800">
+            <span class="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span class="terminal-font text-base sm:text-lg text-cyan-300 tracking-widest select-none">
+              Test test test test
+            </span>
+          </div>
+          <p class="text-xs text-stone-500 font-serif italic mt-3">
+            Signal broadcast on perpetual loop through the decaying walls.
+          </p>
+        </div>
+
+      </div>
+
+      <footer class="mt-14 pt-8 border-t border-stone-800/80 text-xs text-stone-400">
+        <h3 class="font-serif uppercase tracking-widest text-stone-300 text-sm mb-3">Hyperlink Dispatches:</h3>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 font-sans">
+          <li class="bg-stone-900/50 p-2.5 rounded border border-stone-800">
+            <a href="https://en.wikipedia.org/wiki/Aether_(classical_element)" target="_blank" class="text-cyan-300 hover:underline">1. Ethers</a>
+            <span class="text-stone-500 block text-[11px] truncate">The medium of the celestial realm</span>
+          </li>
+          <li class="bg-stone-900/50 p-2.5 rounded border border-stone-800">
+            <a href="https://en.wikipedia.org/wiki/Shock_and_awe" target="_blank" class="text-cyan-300 hover:underline">2. Shock and Awe</a>
+            <span class="text-stone-500 block text-[11px] truncate">Rapid dominance and psychological paralysis</span>
+          </li>
+          <li class="bg-stone-900/50 p-2.5 rounded border border-stone-800">
+            <a href="https://en.wikipedia.org/wiki/Glitch" target="_blank" class="text-cyan-300 hover:underline">3. Glitches</a>
+            <span class="text-stone-500 block text-[11px] truncate">Short-lived digital faults & synthetic ghosts</span>
+          </li>
+          <li class="bg-stone-900/50 p-2.5 rounded border border-stone-800">
+            <a href="https://en.wikipedia.org/wiki/Multi-factor_authentication" target="_blank" class="text-cyan-300 hover:underline">4. Two Factor Auth</a>
+            <span class="text-stone-500 block text-[11px] truncate">Verification tokens of hijacked identities</span>
+          </li>
+          <li class="bg-stone-900/50 p-2.5 rounded border border-stone-800">
+            <a href="https://en.wikipedia.org/wiki/Ransomware" target="_blank" class="text-cyan-300 hover:underline">5. Ransomware</a>
+            <span class="text-stone-500 block text-[11px] truncate">Extortion via memory encryption</span>
+          </li>
+        </ul>
+      </footer>
+
+    </article>
+
+    <!-- GitHub Pages Setup Tip Card (Collapsible) -->
+    <aside class="mt-8 p-4 rounded-xl bg-stone-950/70 border border-stone-800/60 text-stone-400 text-xs leading-relaxed">
+      <div class="flex items-center justify-between cursor-pointer" onclick="document.getElementById('gh-help').classList.toggle('hidden')">
+        <span class="font-medium text-stone-300 tracking-wider">🕮 GitHub Folder File Mapping Info</span>
+        <span class="text-stone-500 hover:text-stone-300">Toggle details ▾</span>
+      </div>
+      <div id="gh-help" class="mt-3 space-y-1.5 pt-2 border-t border-stone-800/80 text-stone-400">
+        <p>• <strong>Wallpaper background:</strong> Place your blue floral wallpaper image as <code class="text-cyan-200">image_2.png</code> (or <code class="text-cyan-200">wallpaper.png</code>).</p>
+        <p>• <strong>Other images:</strong> Place the vaulted ceiling as <code class="text-cyan-200">image.png</code>, the bedroom as <code class="text-cyan-200">image_3.png</code>, and the night-vision ghost figure as <code class="text-cyan-200">image_4.png</code>.</p>
+        <p>• <strong>Audio:</strong> Place your sound recording as <code class="text-cyan-200">test.mp3</code> (or <code class="text-cyan-200">test.wav</code>). When clicked, it will play the file, or generate a live ethereal tone if waiting for your upload.</p>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Target audio tag looking for test.mp3 in the repo folder -->
+  <audio id="background-audio" preload="auto" loop>
+    <source src="test.mp3" type="audio/mpeg">
+    <source src="test.wav" type="audio/wav">
+    <source src="test.ogg" type="audio/ogg">
+  </audio>
+
+  <script>
+    (function initGhostParticles() {
+      const canvas = document.getElementById('ghost-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.size = Math.random() * 2.8 + 0.6;
+          this.speedY = -(Math.random() * 0.45 + 0.15);
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.alpha = Math.random() * 0.6 + 0.1;
+          this.fadeSpeed = Math.random() * 0.003 + 0.001;
+        }
+        update() {
+          this.y += this.speedY;
+          this.x += this.speedX;
+          this.alpha -= this.fadeSpeed;
+          if (this.y < -10 || this.alpha <= 0) {
+            this.reset();
+            this.y = height + 10;
+          }
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(180, 225, 235, ${this.alpha})`;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = 'rgba(157, 216, 223, 0.4)';
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < 45; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let p of particles) {
+          p.update();
+          p.draw();
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    (function initAudioController() {
+      const audio = document.getElementById('background-audio');
+      const toggleBtn = document.getElementById('audio-toggle-btn');
+      const icon = document.getElementById('audio-icon');
+      const label = document.getElementById('audio-label');
+
+      let isPlaying = false;
+      let synthContext = null;
+      let droneOsc1, droneOsc2, droneGain;
+
+      // Web Audio API ambient fallback synthesizer if test.mp3 is not yet loaded
+      function startSpectralDroneFallback() {
+        if (!synthContext) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          synthContext = new AudioContext();
+          
+          droneOsc1 = synthContext.createOscillator();
+          droneOsc2 = synthContext.createOscillator();
+          droneGain = synthContext.createGain();
+
+          droneOsc1.type = 'sine';
+          droneOsc1.frequency.setValueAtTime(55, synthContext.currentTime); // Low A
+
+          droneOsc2.type = 'triangle';
+          droneOsc2.frequency.setValueAtTime(110.5, synthContext.currentTime); // Subtle binaural beat
+
+          droneGain.gain.setValueAtTime(0.001, synthContext.currentTime);
+          droneGain.gain.exponentialRampToValueAtTime(0.08, synthContext.currentTime + 3);
+
+          droneOsc1.connect(droneGain);
+          droneOsc2.connect(droneGain);
+          droneGain.connect(synthContext.destination);
+
+          droneOsc1.start();
+          droneOsc2.start();
+        } else if (synthContext.state === 'suspended') {
+          synthContext.resume();
+        }
+      }
+
+      function stopSpectralDrone() {
+        if (synthContext && synthContext.state === 'running') {
+          synthContext.suspend();
+        }
+      }
+
+      function updateUI(playing) {
+        if (playing) {
+          icon.classList.remove('bg-red-500', 'shadow-[0_0_8px_#ef4444]');
+          icon.classList.add('bg-cyan-400', 'shadow-[0_0_10px_#22d3ee]', 'animate-pulse');
+          label.textContent = 'Ambient Audio : Playing';
+          label.classList.add('text-cyan-300');
+        } else {
+          icon.classList.remove('bg-cyan-400', 'shadow-[0_0_10px_#22d3ee]', 'animate-pulse');
+          icon.classList.add('bg-red-500', 'shadow-[0_0_8px_#ef4444]');
+          label.textContent = 'Ambient Audio : Paused';
+          label.classList.remove('text-cyan-300');
+        }
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        if (!isPlaying) {
+          // Attempt to play user's local test.mp3 first
+          audio.play().then(() => {
+            isPlaying = true;
+            updateUI(true);
+          }).catch(err => {
+            // If local test.mp3 is missing or blocked, start the synthesized gothic drone!
+            console.info("Using ethereal ambient synthesizer fallback for preview:", err.message);
+            startSpectralDroneFallback();
+            isPlaying = true;
+            updateUI(true);
+          });
+        } else {
+          audio.pause();
+          stopSpectralDrone();
+          isPlaying = false;
+          updateUI(false);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
