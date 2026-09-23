@@ -20,6 +20,7 @@
       --blush: #fda4af;
       --chrome: #e2e8f0;
       --text: #e2e8f0;
+      --panel: rgba(10, 35, 47, 0.82);
     }
 
     * { box-sizing: border-box; }
@@ -27,20 +28,38 @@
     body {
       margin: 0;
       font-family: Georgia, "Times New Roman", serif;
-      background: var(--abyss);
+      background:
+        radial-gradient(circle at top, rgba(0,242,210,0.09), transparent 30%),
+        linear-gradient(180deg, #05131a 0%, #081d27 100%);
       color: var(--text);
       line-height: 1.8;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,242,210,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,158,11,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
     }
 
     .page {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 32px 18px 80px;
+      position: relative;
+      z-index: 1;
     }
 
     .topbar {
       margin-bottom: 24px;
-      border: 1px solid rgba(0,242,210,.3);
+      border: 1px solid rgba(0,242,210,.35);
       background: rgba(10,35,47,.8);
       padding: 14px 18px;
       border-radius: 14px;
@@ -49,6 +68,7 @@
       font-size: 0.72rem;
       font-family: monospace;
       color: var(--foam);
+      box-shadow: inset 0 0 16px rgba(0,242,210,0.08), 0 0 18px rgba(0,242,210,0.08);
     }
 
     .hero {
@@ -56,12 +76,24 @@
       grid-template-columns: 1.25fr 0.75fr;
       gap: 22px;
       align-items: center;
-      border: 1px solid rgba(0,242,210,.3);
-      background: rgba(11,35,47,0.9);
+      border: 1px solid rgba(0,242,210,.35);
+      background: linear-gradient(135deg, rgba(10,35,47,0.9), rgba(17,53,69,0.72));
       border-radius: 18px;
       padding: 24px;
-      box-shadow: 0 0 28px rgba(0,0,0,.25);
+      box-shadow: 0 0 26px rgba(0,242,210,0.08), 0 0 20px rgba(245,158,11,0.08);
       margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -20% -10% auto auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(0,242,210,0.18), transparent 65%);
+      pointer-events: none;
     }
 
     .hero h1 {
@@ -80,6 +112,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      text-shadow: 0 0 18px rgba(0,242,210,0.2);
     }
 
     .hero .meta {
@@ -93,9 +126,10 @@
     .hero-photo {
       width: 100%;
       border-radius: 14px;
-      border: 1px solid rgba(0,242,210,.25);
-      box-shadow: 0 0 20px rgba(0,0,0,.25);
+      border: 1px solid rgba(0,242,210,.3);
+      box-shadow: 0 0 18px rgba(0,242,210,0.14), 0 0 18px rgba(245,158,11,0.1);
       display: block;
+      filter: saturate(1.15) contrast(1.08);
     }
 
     .essay {
@@ -110,6 +144,7 @@
       border: 1px solid rgba(0,242,210,.2);
       border-radius: 18px;
       padding: 28px 26px;
+      box-shadow: inset 0 0 18px rgba(0,242,210,0.04);
     }
 
     article p {
@@ -125,14 +160,37 @@
       margin: 0.08em 0.12em 0 0;
       color: var(--cyan);
       font-weight: 700;
+      text-shadow: 0 0 12px rgba(0,242,210,0.16);
+    }
+
+    article a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(0,242,210,0.7);
+    }
+
+    article a:hover {
+      color: white;
+      text-shadow: 0 0 10px rgba(0,242,210,0.6);
     }
 
     .photo-figure {
       margin: 1.3em 0 1.9em;
-      border: 1px solid rgba(0,242,210,.25);
+      border: 1px solid rgba(0,242,210,.32);
       background: rgba(0,0,0,.14);
       border-radius: 16px;
       overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.18), 0 0 18px rgba(0,242,210,0.08);
+    }
+
+    .photo-figure::before,
+    .bottom-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,242,210,0.08), transparent 30%, rgba(245,158,11,0.06));
+      pointer-events: none;
     }
 
     .photo-figure img {
@@ -140,16 +198,20 @@
       display: block;
       object-fit: cover;
       max-height: 520px;
+      filter: contrast(1.1) saturate(1.2) brightness(0.92);
     }
 
     .photo-figure figcaption {
+      position: relative;
+      z-index: 1;
       padding: 10px 12px 12px;
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       font-family: monospace;
       color: var(--foam);
-      background: rgba(5,19,26,.5);
+      background: rgba(5,19,26,.68);
+      border-top: 1px solid rgba(0,242,210,.2);
     }
 
     .sidebar {
@@ -159,9 +221,10 @@
 
     .panel {
       border: 1px solid rgba(0,242,210,.25);
-      background: rgba(10,35,47,.82);
+      background: var(--panel);
       border-radius: 18px;
       padding: 18px;
+      box-shadow: inset 0 0 12px rgba(0,242,210,0.05), 0 0 14px rgba(0,242,210,0.04);
     }
 
     .panel h3 {
@@ -181,11 +244,21 @@
     }
 
     .bottom-image {
+      position: relative;
+      display: block;
       margin-top: 28px;
       width: 100%;
       border-radius: 18px;
-      border: 1px solid rgba(0,242,210,.25);
+      border: 1px solid rgba(0,242,210,.3);
+      box-shadow: 0 0 18px rgba(0,242,210,0.09), 0 0 18px rgba(245,158,11,0.08);
+      overflow: hidden;
+      filter: saturate(1.15) contrast(1.08);
+    }
+
+    .bottom-image img {
+      width: 100%;
       display: block;
+      border-radius: 18px;
     }
 
     @media (max-width: 860px) {
@@ -268,7 +341,9 @@
           “How was LA?” he asks. “Everyone is a robot, the cheese is congealed, and no one eats,” my daughter tells him. I stare ahead at the windows and at the way the day keeps folding itself into another version of itself, as if we have stepped into a near-future memory made of desert air, cheap hospitality, and endless implied motion.
         </p>
 
-        <img class="bottom-image" src="Beachsunset.jpg" alt="Beach sunset at the end of the story" />
+        <div class="bottom-image">
+          <img src="Beachsunset.jpg" alt="Beach sunset at the end of the story" />
+        </div>
       </article>
 
       <aside class="sidebar">
